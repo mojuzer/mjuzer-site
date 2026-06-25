@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================================
+ *  DESIGN TOKENS  (§3 of the brief)
+ *  These CSS variables are the single source of truth. tailwind.config.ts
+ *  references them, so changing a value here updates the whole site.
+ * ========================================================================== */
+:root {
+  /* color */
+  --bg: #0b0b0e; /* page background (near-black) */
+  --bg-grad-a: #0c0c11; /* subtle top-left of bg gradient */
+  --bg-grad-b: #08080b; /* subtle bottom-right of bg gradient */
+  --surface: #101015; /* cards / raised sections */
+  --ink: #ececec; /* primary text */
+  --ink-dim: #a6a6b0; /* secondary text */
+  --muted: #7c7c88; /* labels, captions */
+  --hairline: #23232b; /* 1px borders / dividers */
+  --accent: #8b7bff; /* violet — links, ticks, highlights */
+  --accent-hi: #a99bff; /* accent hover */
+  --accent-lo: #5b4fb0; /* deep accent for fills/shadows */
+  --white: #ffffff; /* QR-style inverted panels only */
+
+  /* accent as space-separated channels so both Tailwind's opacity modifiers
+     (rgb(var(--accent-rgb) / <alpha>)) and our own rgb(... / x) usages work.
+     Mirrors --accent (#8B7BFF). */
+  --accent-rgb: 139 123 255;
+}
+
+/* ============================================================================
+ *  BASE
+ * ========================================================================== */
+html {
+  scroll-behavior: smooth;
+  /* Anchor targets clear the sticky nav. */
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg);
+  /* Very subtle diagonal gradient — never a loud blob. */
+  background-image: radial-gradient(
+    120% 120% at 0% 0%,
+    var(--bg-grad-a) 0%,
+    var(--bg) 38%,
+    var(--bg-grad-b) 100%
+  );
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings default to the display face. */
+h1, h2, h3, h4 {
+  font-family: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Sections clear the sticky nav when navigated to via anchor. */
+section[id] {
+  scroll-margin-top: 88px;
+}
+
+/* ============================================================================
+ *  ACCESSIBILITY — focus, selection
+ * ========================================================================== */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+/* Don't show the outline for mouse users who didn't tab. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background: var(--accent-lo);
+  color: var(--white);
+}
+
+/* Subtle, on-brand scrollbar (WebKit). */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--hairline);
+  border-radius: 999px;
+  border: 2px solid var(--bg);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #303039;
+}
+
+/* ============================================================================
+ *  REUSABLE UTILITIES
+ * ========================================================================== */
+
+/* Hairline rule between editorial blocks. */
+.hairline {
+  border-color: var(--hairline);
+}
+
+/* Faint dot-grid texture layer. Opacity is baked into the color (≈7%) so it
+ * never washes out content. Used behind one or two sections only. */
+.dot-grid-layer {
+  background-image: radial-gradient(
+    rgb(var(--accent-rgb) / 0.11) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+  background-position: -13px -13px;
+}
+
+/* The terminal "blinking underscore" cursor (logo + typing line). */
+.cursor-bar {
+  display: inline-block;
+  width: 0.58em;
+  height: 1.05em;
+  margin-left: 0.08em;
+  transform: translateY(0.12em);
+  background: var(--accent);
+}
+
+/* Mono label, e.g. "01 — Services" or a bracket tag. */
+.mono-label {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+/* ============================================================================
+ *  MOTION — everything animated is disabled here for reduced-motion users.
+ * ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
