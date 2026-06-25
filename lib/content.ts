@@ -11,12 +11,20 @@
  *  Cal + Formspree can also be set via env vars (see .env.local.example);
  *  an env var, if present, overrides the value written here.
  * -------------------------------------------------------------------------- */
+/**
+ * Base URL of the live site — the ONE place to change when you connect a
+ * custom domain. metadataBase, canonical link, Open Graph + Twitter, robots,
+ * and sitemap all derive from this (directly, or via url/domain below).
+ * e.g. swap to "https://mjuzer.ai" once the custom domain is live.
+ */
+export const SITE_URL = "https://mjuzer-site.vercel.app";
+
 export const siteConfig = {
   name: "Mohammed Juzer",
   role: "Independent AI Consultant",
-  // Used for SEO/OG absolute URLs. Update if your domain changes.
-  domain: "mjuzer.ai",
-  url: "https://mjuzer.ai",
+  // Absolute base URL + bare host, both derived from SITE_URL (single source).
+  url: SITE_URL,
+  domain: SITE_URL.replace(/^https?:\/\//, ""),
 
   email: "mohdjuzer52@gmail.com",
   linkedin: "https://www.linkedin.com/in/mjuzer",
